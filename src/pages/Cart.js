@@ -14,7 +14,7 @@ export default function Cart() {
   return <section className="cart-items section">
     <h2>your cart</h2>
     {cart.map(item=>{
-      return <cartItem key={item.id}{...item}/>
+      return <CartItem key={item.id}{...item}/>
     })}
     <h2>total : ${total}</h2>
     {user?
