@@ -4,6 +4,7 @@ import {CartContext} from '../../context/cart';
 
 export default function CartItem({id,image,title,price,amount}) {
   //cart context
+  const {removeItem,increaseAmount,decreaseAmount}=React.useContext(CartContext);
   return <article className="cart-item">
     <img src ={image} alt={title}/>
     <div>
@@ -12,7 +13,7 @@ export default function CartItem({id,image,title,price,amount}) {
       <button 
         type="button" className="cart-btn remove-btn" 
         onClick={()=>{
-          console.log("item removed");
+          removeItem(id);
         }}>
           remove
         </button>
@@ -20,15 +21,15 @@ export default function CartItem({id,image,title,price,amount}) {
     <div>
       <button type = "button" className="cart-btn amount-btn"
         onClick={()=>{
-          console.log("Increase")
+          increaseAmount(id);
         }}
       >
         <FaAngleUp/>
       </button>
         <p className="item-amount">{amount}</p>
         <button type = "button" className="cart-btn amount-btn"
-                onClick={()=>{
-          console.log("Increase")
+          onClick={()=>{
+            decreaseAmount(id,amount);
         }}
         >
         <FaAngleDown/>

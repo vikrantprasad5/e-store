@@ -8,7 +8,65 @@ function CartProvider({children}){
     const [cart, setCart]= React.useState(localCart);
     const [total, setTotal]= React.useState(0);
     const [cartItems, setCartItems]= React.useState(0);
-    return <CartContext.Provider value = {{cart,total,cartItems}}>
+    React.useEffect(()=>{
+        //local storage
+        //cart items
+        let newCartItems = cart.reduce((total,cartItem)=>{
+            //console.log({total,cartItem});
+            return (total +=cartItem.amount);
+        },0); 
+        setCartItems(newCartItems);
+        //cart total
+        let newTotal = cart.reduce((total,cartItem)=>{
+            return total +=(cartItem.amount*cartItem.price)
+        },0);
+        newTotal = parseFloat(newTotal.toFixed(2));
+        setTotal(newTotal);
+        //console.log(newTotal);
+    },[cart])
+    //remove item
+    const removeItem = id =>{
+        let newCart = [...cart].filter(item => item.id!==id);
+        setCart(newCart);
+        //setCart([...cart].filter(item => item.id !==id));
+    };
+    //increase amount
+    const increaseAmount = id =>{
+        const newCart = [...cart].map(item=>{
+            return id===item.id?{...item,amount:item.amount+1}
+            :{...item};
+        });
+        setCart(newCart);
+    };
+    //decrease item
+    const decreaseAmount = (id,amount) =>{
+        if(amount===1){
+            removeItem(id);
+            return;
+        }
+        else{
+            const newCart = [...cart].map(item=>{
+                return id===item.id?{...item,amount:item.amount-1}
+                :{...item};
+            });
+            setCart(newCart);
+        }; 
+    };
+    //Add to cart item
+    const addToCart = product =>{};
+    // clear cart
+    const clearCart = () =>{};
+    
+    return <CartContext.Provider value = {{
+        cart,
+        total,
+        cartItems,
+        removeItem,
+        increaseAmount,
+        decreaseAmount,
+        addToCart,
+        clearCart}}
+    >
         {children}
     </CartContext.Provider>
 }
